@@ -1,22 +1,31 @@
-pragma solidity ^0.8.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.28;
 
 contract Notary {
     struct Document {
+        string fileHash;
         uint256 timestamp;
         address owner;
     }
 
-    mapping(bytes32 => Document) public documents;
+    mapping(string => Document) public documents;
+    event DocumentNotarized(string fileHash, uint256 timestamp, address owner);
 
-    function notarizeFile(string memory hash) external {
-        bytes32 hashed = keccak256(abi.encodePacked(hash));
-        require(documents[hashed].timestamp == 0, "Already notarized");
-        documents[hashed] = Document(block.timestamp, msg.sender);
+    function notarizeFile(string memory _fileHash) public {
+        require(bytes(_fileHash).length > 0, "File hash cannot be empty");
+        require(documents[_fileHash].timestamp == 0, "File already notarized");
+
+        documents[_fileHash] = Document({
+            fileHash: _fileHash,
+            timestamp: block.timestamp,
+            owner: msg.sender
+        });
+
+        emit DocumentNotarized(_fileHash, block.timestamp, msg.sender);
     }
 
-    function verifyDocument(string memory hash) external view returns (uint256, address) {
-        bytes32 hashed = keccak256(abi.encodePacked(hash));
-        Document memory doc = documents[hashed];
-        return (doc.timestamp, doc.owner);
+    function verifyDocument(string memory _fileHash) public view returns (uint256, address) {
+        require(documents[_fileHash].timestamp != 0, "Document not found");
+        return (documents[_fileHash].timestamp, documents[_fileHash].owner);
     }
 }

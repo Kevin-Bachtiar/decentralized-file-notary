@@ -1,15 +1,18 @@
 const hre = require("hardhat");
 
 async function main() {
-  const Notary = await hre.ethers.getContractFactory("Notary");
-  const notary = await Notary.deploy();
-  await notary.waitForDeployment();
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying contract with account:", deployer.address);
 
-  const address = await notary.getAddress();
-  console.log("✅ Contract deployed to:", address);
+  const ContractFactory = await hre.ethers.getContractFactory("Notary"); // Ganti dengan nama kontrak kamu
+  const contract = await ContractFactory.deploy(); // <- deploy dari factory
+  await contract.waitForDeployment(); // << GANTI INI, bukan .deployed()
+
+  const contractAddress = await contract.getAddress(); // << ambil alamat
+  console.log("✅ Contract deployed to:", contractAddress);
 }
 
 main().catch((error) => {
-  console.error(error);
+  console.error("❌ Error saat deploy:", error);
   process.exitCode = 1;
 });
