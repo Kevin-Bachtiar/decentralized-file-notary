@@ -5,7 +5,10 @@ async function main() {
   console.log("Deploying contract with account:", deployer.address);
 
   const ContractFactory = await hre.ethers.getContractFactory("Notary");
+  console.log("⏳ Creating contract instance...");
   const contract = await ContractFactory.deploy();
+
+  console.log("⏳ Waiting for deployment...");
   await contract.waitForDeployment();
 
   const contractAddress = await contract.getAddress();

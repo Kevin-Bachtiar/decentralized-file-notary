@@ -1,17 +1,27 @@
-  require("@nomicfoundation/hardhat-toolbox");
-  require("dotenv").config();
+require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config();
+const { task } = require("hardhat/config");
 
-  /** @type import('hardhat/config').HardhatUserConfig */
+// ✅ Custom task: lihat daftar akun
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  const accounts = await hre.ethers.getSigners();
 
-  console.log("Private key loaded:", process.env.SEPOLIA_PRIVATE_KEY ? "YES" : "NO");
+  for (const account of accounts) {
+    console.log(account.address);
+  }
+});
 
-  module.exports = {
-    solidity: "0.8.28",
-    networks: {
-      sepolia: {
-        url: "https://eth-sepolia.g.alchemy.com/v2/tAoiOjQ8Ngx543gDq48uNrHapsq0Z9Sd",
-        accounts: [process.env.SEPOLIA_PRIVATE_KEY],
-        timeout: 200000, // opsional, biar gak timeout
-      },
+console.log("Private key loaded:", process.env.BUILDBEAR_PRIVATE_KEY ? "YES" : "NO");
+
+module.exports = {
+  solidity: "0.8.28",
+  networks: {
+    buildbear: {
+      url: process.env.BUILDBEAR_RPC_URL,
+      accounts: [process.env.BUILDBEAR_PRIVATE_KEY],
+      chainId: 26839,
+      gas: 10000000, // Optional, untuk menghindari gas terlalu kecil
+      timeout: 200000, // Hindari timeout saat deploy
     },
-  };
+  },
+};
