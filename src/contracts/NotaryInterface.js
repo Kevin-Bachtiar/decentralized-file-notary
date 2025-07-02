@@ -16,12 +16,19 @@ export async function getNotaryContract() {
 
 export async function notarizeFile(fileHash) {
   const notaryContract = await getNotaryContract();
-  const tx = await notaryContract.notarizeFile(fileHash);
+  const tx = await notaryContract.notarize(fileHash);
   await tx.wait();
   return tx;
 }
 
 export async function verifyDocument(fileHash) {
   const notaryContract = await getNotaryContract();
+  return await notaryContract.verifyDocument(fileHash);
+}
+
+export async function verifyDocumentPublic(fileHash) {
+  const provider = new ethers.JsonRpcProvider("https://rpc.buildbear.io/exclusive-carnage-12b2998f");
+  const notaryContract = new ethers.Contract(NOTARY_CONTRACT_ADDRESS, NotaryABI, provider);
+
   return await notaryContract.verifyDocument(fileHash);
 }
