@@ -27,7 +27,7 @@ export default function CertificatePage({ data, onBack }) {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gray-900 text-white">
-      <h1 className="text-3xl font-bold mb-6">📄 Certificate of Notarization</h1>
+      <h1 className="text-3xl font-bold mb-6">📄 Certificate of Notarizationn</h1>
 
       <div className="bg-gray-800 p-6 rounded-xl shadow-md w-full max-w-2xl">
         <p><strong>File Hash:</strong></p>
