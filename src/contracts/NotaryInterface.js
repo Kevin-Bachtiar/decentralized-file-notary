@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import NotaryABI from "./NotaryABI.json";
 
-const NOTARY_CONTRACT_ADDRESS = "0x9baab117304f7d6517048e371025db8f89a8dbe5"; // Replace with your contract address
+const NOTARY_CONTRACT_ADDRESS = "0xd1d01555b5dc60ba330414be2266f4fac195a32b";
 
 export async function getNotaryContract() {
   if (!window.ethereum) {
@@ -16,7 +16,7 @@ export async function getNotaryContract() {
 
 export async function notarizeFile(fileHash) {
   const notaryContract = await getNotaryContract();
-  const tx = await notaryContract.notarize(fileHash);
+  const tx = await notaryContract.notarizeFile(fileHash);
   await tx.wait();
   return tx;
 }
