@@ -16,6 +16,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error("❌ Error saat deploy:", error);
+  console.error("❌ Error when deployed:", error);
   process.exitCode = 1;
 });
