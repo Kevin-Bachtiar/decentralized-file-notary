@@ -37,7 +37,7 @@ function NotarizationPage() {
           setCertificateData({ fileHash: hash, timestamp: ts, owner });
         }
       } catch (err) {
-        // Not yet notarized, don't set certificateData
+        // Not yet notarized
       }
     }
   };
@@ -53,10 +53,10 @@ function NotarizationPage() {
       await notarizeFile(fileHash);
       const [ts, owner] = await verifyDocument(fileHash);
       setCertificateData({ fileHash, timestamp: ts, owner });
-      setResult("Berhasil dinotariskan!");
+      setResult("✅ Dokumen berhasil dinotariskan!");
     } catch (error) {
       console.error(error);
-      setResult(`Notarization failed: ${error.message}`);
+      setResult(`❌ Notarization failed: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -162,35 +162,71 @@ function NotarizationPage() {
   doc.text("BLOCKCHAIN", 105, 150, { angle: 45, align: "center" });
 
   doc.save(`Blockchain-Notarization-${fileHash.slice(0, 8)}.pdf`);
-};
+  };
 
-  return (
-    <div style={{ padding: 20 }}>
-      <h2>📝 Notarisasi Dokumen</h2>
-      <input type="file" onChange={handleFileChange} />
-      <br /><br />
+return (
+    <div style={{ padding: 20, maxWidth: 800, margin: "0 auto", fontFamily: "Arial, sans-serif" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h2>📝 <span style={{ fontWeight: "bold" }}>Notarisasi Dokumen</span></h2>
+        <button onClick={() => navigate("/verify")} style={{
+          padding: "6px 14px",
+          backgroundColor: "#1976d2",
+          color: "#fff",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer"
+        }}>
+          🔍 Verifikasi Dokumen
+        </button>
+      </div>
+
+      <p style={{ color: "#555", fontSize: "0.95rem" }}>
+        Unggah file Anda untuk dicatat secara permanen di blockchain sebagai bukti keaslian.
+      </p>
+
+      <input type="file" onChange={handleFileChange} style={{ margin: "20px 0" }} />
 
       {fileHash && (
         <>
-          <p><strong>Hash File:</strong> {fileHash}</p>
+          <p><strong>Hash File:</strong> <code>{fileHash}</code></p>
 
           {certificateData ? (
-            <div>
-              <p>✅ File ini sudah dinotariskan.</p>
-              <p><strong>Tanggal:</strong> {new Date(Number(certificateData.timestamp) * 1000).toLocaleString()}</p>
+            <div style={{ marginTop: 20 }}>
+              <p style={{ color: "green" }}>✅ File ini sudah dinotariskan sebelumnya.</p>
+              <p><strong>Tanggal:</strong> {new Date(Number(certificateData.timestamp) * 1000).toLocaleString("en-US")}</p>
               <p><strong>Owner:</strong> {certificateData.owner}</p>
-              <button onClick={() => alert("Verifikasi sukses ✔️")}>🔍 Verifikasi File</button>
-              <button onClick={handleDownloadPDF}>📄 Download Sertifikat PDF</button>
+
+              <div style={{ marginTop: 10 }}>
+                <button onClick={() => alert("Verifikasi sukses ✔️")} style={{ marginRight: 10 }}>
+                  🔍 Verifikasi File
+                </button>
+                <button onClick={handleDownloadPDF}>📄 Download Sertifikat PDF</button>
+              </div>
             </div>
           ) : (
-            <button onClick={handleNotarize} disabled={isLoading}>
+            <button
+              onClick={handleNotarize}
+              disabled={isLoading}
+              style={{
+                backgroundColor: isLoading ? "#ccc" : "#388e3c",
+                color: "#fff",
+                padding: "10px 16px",
+                border: "none",
+                borderRadius: "4px",
+                cursor: isLoading ? "not-allowed" : "pointer"
+              }}
+            >
               {isLoading ? "Memproses..." : "🚀 Notarize Sekarang"}
             </button>
           )}
         </>
       )}
 
-      {result && <p style={{ color: "green" }}>{result}</p>}
+      {result && (
+        <p style={{ marginTop: 20, color: result.startsWith("✅") ? "green" : "red" }}>
+          {result}
+        </p>
+      )}
     </div>
   );
 }
