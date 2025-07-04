@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import NotaryABI from "./NotaryABI.json";
 
-const NOTARY_CONTRACT_ADDRESS = "0xd1d01555b5dc60ba330414be2266f4fac195a32b";
+export const NOTARY_CONTRACT_ADDRESS = "0xd1d01555b5dc60ba330414be2266f4fac195a32b";
 
 export async function getNotaryContract() {
   if (!window.ethereum) {
