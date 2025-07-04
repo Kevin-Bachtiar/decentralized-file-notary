@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+# 🔐 Blockchain File Notarization DApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple and intuitive decentralized application (DApp) for notarizing files on the Ethereum blockchain. This project allows users to prove that a file existed at a certain time and was owned by a specific wallet, secured by cryptographic hashing and immutability of blockchain.
 
-## Available Scripts
+## 🎯 Key Use Case
 
-In the project directory, you can run:
+Whether it's legal documents, digital artworks, certificates, or any sensitive file, this app provides a way to prove **"I had this file first, and here's proof on-chain."**
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🛠️ Built With
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Tech            | Role                                     |
+|-----------------|------------------------------------------|
+| **Solidity**    | Smart Contract (developed via Remix IDE) |
+| **React**       | Frontend UI                              |
+| **MetaMask**    | Wallet Integration for interaction       |
+| **BuildBear**   | Testnet Environment (EVM-compatible)     |
+| **jsPDF**       | Generate PDF-based blockchain certificate |
+| **qrcode**      | Generate QR code for instant verification |
+| **ethers.js**   | Communicate with smart contract          |
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ⚠️ Known Limitations
 
-### `npm run build`
+- 🔐 Currently no IPFS or file storage: only the file hash is stored, not the actual file.
+- 🔁 No protection against duplicate notarization (can be added).
+- 📉 No gas optimization or batching (each notarization is a separate tx).
+- 🌍 Only supports one network (BuildBear) — Mainnet/Testnet toggle could be added.
+- 🧾 No transaction hash shown in PDF (could be included in future).
+- 📂 File size or format validation not yet implemented.
+- 👤 No user history or dashboard yet for notarized docs.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+These limitations are noted for improvement in future versions.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🧭 Roadmap
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [ ] Add IPFS support for optional file backup
+- [ ] Show TX hash & contract explorer link in PDF
+- [ ] Add feature to prevent duplicate hash submissions
+- [ ] Deploy version to testnet/mainnet toggle
+- [ ] Implement user dashboard for submitted notarizations
+- [ ] Add localization (EN/ID)
 
-### `npm run eject`
+## 🧩 How It Works
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 🔒 Notarization Flow
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. User uploads a file (any format).
+2. File is hashed locally using `SHA-256` (no file leaves your machine).
+3. The hash is sent to the smart contract and recorded immutably.
+4. User receives a downloadable certificate (PDF) containing:
+   - File hash
+   - Blockchain timestamp
+   - Wallet address
+   - QR Code to verify publicly
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 🔍 Verification Flow
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Anyone can visit `/verify` route.
+2. Enter the file or paste the hash.
+3. If it’s notarized, show full details (timestamp, owner, etc).
+4. No wallet required for verification.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🚀 Getting Started
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Prerequisites
 
-### Code Splitting
+- Node.js ≥ 18
+- MetaMask browser extension
+- Testnet ETH (from BuildBear faucet)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Installation
 
-### Analyzing the Bundle Size
+```bash
+git clone https://github.com/your-username/blockchain-notary.git
+cd blockchain-notary
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
